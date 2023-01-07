@@ -72,7 +72,7 @@ passport.deserializeUser(function (user, cb) {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/secrets"
+    callbackURL: "https://secrets-deepak.onrender.com/auth/google/secrets"
 },
     function (accessToken, refreshToken, profile, cb) {
         console.log(profile);
@@ -85,7 +85,7 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     // clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/secrets",
+    callbackURL: "https://secrets-deepak.onrender.com/auth/facebook/secrets",
     enableProof: true,
     profileFields: ['id', 'displayName', 'photos', 'email']
 },
