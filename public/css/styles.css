@@ -3,7 +3,7 @@ body {
 }
 
 .centered {
-  padding-top: 200px;
+  padding: 100px 40px 0 0;
   text-align: center;
 }
 
@@ -13,7 +13,6 @@ body {
   color: #fff;
   background-color: #000;
 }
-
 .bi {
   font-size: 2rem;
   color: #000;
@@ -27,5 +26,33 @@ span a,
 span a:hover,
 .bi:hover {
   text-decoration: none;
-  color: #007bff ;
+  color: #007bff;
+}
+
+@media screen and (max-device-width: 480px) {
+
+  .footer-text,
+  nav .bi,
+  .fab {
+    font-size: 2.5rem;
+  }
+
+  .secret-text{
+    font-size: 3rem;
+  }
+
+  .heading {
+    font-size: 4rem;
+  }
+
+  .lead {
+    font-size: 2rem;
+  }
+
+  .btn {
+    font-size: 2rem;
+  }
+  .submit-text{
+    margin-top: 100px;
+  }
 }

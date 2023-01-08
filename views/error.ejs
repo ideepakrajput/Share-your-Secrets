@@ -4,10 +4,13 @@
 <div class="jumbotron centered">
   <div class="container">
     <i class="fas fa-key fa-6x"></i>
-    <h1 class="display-3">Secrets</h1>
+    <h1 class="display-3 heading">Secrets</h1>
     <h1 class="text-danger">ERROR 404</h1>
     <% if (invalidEmail) { %>
     <h3 class="lead">Invalid username i.e. your email id is not valid</h3>
+    <% } %>
+    <% if (notSamePassword) { %>
+      <h3 class="lead">Entered password was not matched.</h3>
     <% } %>
     <h3 class="lead">Invalid Crendentials.</h3>
     <hr>
