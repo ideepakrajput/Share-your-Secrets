@@ -202,7 +202,10 @@ app.route("/submit")
         const submittedSecret = req.body.secret;
         User.findById(req.user.id, (err, foundUser) => {
             if (err) {
+                res.render("error", { invalidEmail: false, notSamePassword: false });
                 console.log(err);
+            } else if (foundUser === null) {
+                res.render("error", { invalidEmail: false, notSamePassword: false });
             } else {
                 foundUser.secrets.push(submittedSecret);
                 foundUser.save(function () {
