@@ -110,7 +110,7 @@ app.get("/auth/facebook",
 );
 
 app.get("/auth/facebook/secrets",
-    passport.authenticate("google", { failureRedirect: "/login" }),
+    passport.authenticate("facebook", { failureRedirect: "/login" }),
     function (req, res) {
         res.redirect("/secrets");
     }
@@ -204,6 +204,4 @@ app.get("/secrets", (req, res) => {
     })
 })
 
-app.listen(process.env.PORT || 3000, function () {
-    console.log("Server running on port 3000");
-})
+app.listen(process.env.PORT || 3000);
