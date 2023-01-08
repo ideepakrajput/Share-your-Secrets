@@ -3,8 +3,8 @@ body {
 }
 
 .centered {
-    padding-top: 200px;
-    text-align: center;
+  padding-top: 200px;
+  text-align: center;
 }
 
 .secret-text {
@@ -12,4 +12,20 @@ body {
   font-size: 2rem;
   color: #fff;
   background-color: #000;
+}
+
+.bi {
+  font-size: 2rem;
+  color: #000;
+}
+
+span a,
+.bi:hover {
+  color: #000;
+}
+
+span a:hover,
+.bi:hover {
+  text-decoration: none;
+  color: #007bff ;
 }
