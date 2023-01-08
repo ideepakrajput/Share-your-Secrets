@@ -9,12 +9,14 @@ const md5 = require("md5");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const passport = require("passport");
-var LocalStrategy = require('passport-local');
+const LocalStrategy = require('passport-local');
 const passportLocalMongoose = require("passport-local-mongoose");
 const saltRounds = 10;
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
-var findOrCreate = require('mongoose-findorcreate');
+const findOrCreate = require('mongoose-findorcreate');
+const https = require("https");
+const { response } = require('express');
 
 const app = express();
 
@@ -26,7 +28,6 @@ app.use(session({
     secret: process.env.secretSession,
     resave: false,
     saveUninitialized: false
-    // cookie: { secure: true }
 }));
 
 app.use(passport.initialize());
@@ -92,7 +93,7 @@ app.get("/auth/google/secrets",
 //Facebook OAuth2.0
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
-    // clientSecret: FACEBOOK_APP_SECRET,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: "https://secrets-deepak.onrender.com/auth/facebook/secrets",
     enableProof: true,
     profileFields: ['id', 'displayName', 'photos', 'email']
@@ -127,15 +128,33 @@ app.route("/register")
         res.render("register");
     })
     .post((req, res) => {
-        User.register({ username: req.body.username }, req.body.password, (err, user) => {
-            if (err) {
-                console.log(err);
-                res.render("/register");
-            } else {
-                passport.authenticate("local")(req, res, () => {
-                    res.redirect("/secrets");
-                })
-            }
+        const api_key = process.env.api_key;
+        const email = req.body.username;
+        const password = req.body.password;
+        const confirmPassword = req.body.confirmPassword;
+        const url = "https://api.zerobounce.net/v2/validate?email=" + email + "&api_key=" + api_key;
+        https.get(url, (response) => {
+            response.on("data", (data) => {
+                const responseData = JSON.parse(data);
+                const ranOutCredits = responseData.error;
+                const emailStatus = responseData.status;
+                if (ranOutCredits === "Invalid API key or your account ran out of credits" || emailStatus === "valid" || password === confirmPassword) {
+                    User.register({ username: req.body.username }, req.body.password, (err, user) => {
+                        if (err) {
+                            console.log(err);
+                            res.render("/register");
+                        } else {
+                            passport.authenticate("local")(req, res, () => {
+                                res.redirect("/secrets");
+                            })
+                        }
+                    })
+                } else if (password === confirmPassword) {
+                    res.render("error", { invalidEmail: false, notSamePassword: true })
+                } else {
+                    res.render("error", { invalidEmail: true, notSamePassword: false });
+                }
+            })
         })
     })
 
@@ -151,7 +170,7 @@ app.route("/login")
         });
         req.login(user, (err) => {
             if (err) {
-                console.log(err);
+                res.render("error", { invalidEmail: false, notSamePassword: false })
             } else {
                 passport.authenticate("local")(req, res, () => {
                     res.redirect("/secrets");
