@@ -13,7 +13,7 @@
 ### If you want to add writer of secret that will be added or says anonymously.
 
 ## 👇 Site is live you can see on click see.
-[see](https://secrets-deepak.onrender.com/)
+[See](https://secrets-deepak.onrender.com/)
 
 ## 👨‍💻 Contact to Developer
 [Gmail](mailto:deepak.bcas.du@gmail.com) [LinkedIn](https://linkedin.com/in/ideepakrajput)
