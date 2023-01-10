@@ -256,4 +256,17 @@ app.get("/error", (req, res) => {
     res.render("error", { notSamePassword: notSamePassword, invalidEmail: invalidEmail, isUserFound: isUserFound });
 });
 
+//Delete Route
+app.post("/delete" ,(req,res)=>{
+    const selectedSecret=req.body.selectedSecret;
+
+    User.findOneAndRemove({secerts:selectedSecret},(err,foundSecret)=>{
+        if (err) {
+            res.redirect("/error");
+        } else {
+            res.redirect("/secrets");
+        }
+    })
+})
+
 app.listen(process.env.PORT || 3000);
