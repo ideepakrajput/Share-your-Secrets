@@ -18,6 +18,10 @@ const findOrCreate = require('mongoose-findorcreate');
 const https = require("https");
 const { response } = require('express');
 
+let notSamePassword = false;
+let invalidEmail = false;
+let isUserFound = true;
+
 const app = express();
 
 app.set("view engine", "ejs");
@@ -149,10 +153,16 @@ app.route("/register")
                             })
                         }
                     })
-                } else if (password === confirmPassword) {
-                    res.render("error", { invalidEmail: false, notSamePassword: true })
-                } else {
-                    res.render("error", { invalidEmail: true, notSamePassword: false });
+                } else if (password != confirmPassword) {
+                    notSamePassword = true;
+                    res.redirect("/error");
+
+                } else if (emailStatus === "invalid") {
+                    invalidEmail = true;
+                    res.redirect("/error");
+                }
+                else {
+                    res.redirect("/error");
                 }
             })
         })
@@ -168,15 +178,23 @@ app.route("/login")
             username: req.body.username,
             password: req.body.password
         });
-        req.login(user, (err) => {
+        User.findOne({ username: username, password: password }, (err, foundUser) => {
             if (err) {
-                res.render("error", { invalidEmail: false, notSamePassword: false })
+                isUserFound = false;
+                res.redirect("/error");
             } else {
-                passport.authenticate("local")(req, res, () => {
-                    res.redirect("/secrets");
-                })
+                req.login(user, (err) => {
+                    if (err) {
+                        isUserFound = false;
+                        res.redirect("/error");
+                    } else {
+                        passport.authenticate("local")(req, res, () => {
+                            res.redirect("/secrets");
+                        })
+                    }
+                });
             }
-        });
+        })
     })
 
 //Logout Route
@@ -202,10 +220,12 @@ app.route("/submit")
         const submittedSecret = req.body.secret;
         User.findById(req.user.id, (err, foundUser) => {
             if (err) {
-                res.render("error", { invalidEmail: false, notSamePassword: false });
+                isUserFound = false;
+                res.redirect("/error");
                 console.log(err);
             } else if (foundUser === null) {
-                res.render("error", { invalidEmail: false, notSamePassword: false });
+                isUserFound = false;
+                res.redirect("/error");
             } else {
                 foundUser.secrets.push(submittedSecret);
                 foundUser.save(function () {
@@ -224,6 +244,11 @@ app.get("/secrets", (req, res) => {
             res.render("secrets", { usersWithSecrets: foundUsers });
         }
     })
-})
+});
+
+//Error Route
+app.get("/error", (req, res) => {
+    res.render("error", { notSamePassword: notSamePassword, invalidEmail: invalidEmail, isUserFound: isUserFound });
+});
 
 app.listen(process.env.PORT || 3000);

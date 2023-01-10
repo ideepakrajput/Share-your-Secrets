@@ -8,11 +8,16 @@
     <h1 class="text-danger">ERROR 404</h1>
     <% if (invalidEmail) { %>
     <h3 class="lead">Invalid username i.e. your email id is not valid</h3>
+    <% }else if (notSamePassword) { %>
+    <h3 class="lead">Entered password was not matched.</h3>
+    <% } else if (!isUserFound) {%>
+    <h3 class="lead">User not Found.</h3>
+    <% } else { %>
+    <h3 class="lead">Error occured.</h3>
+    <h3 class="lead">Please try again.</h3>
+    <h3 class="lead">Sorry for inconvenience</h3>
+    
     <% } %>
-    <% if (notSamePassword) { %>
-      <h3 class="lead">Entered password was not matched.</h3>
-    <% } %>
-    <h3 class="lead">Invalid Crendentials.</h3>
     <hr>
     <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
     <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
