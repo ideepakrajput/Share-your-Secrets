@@ -18,9 +18,9 @@ const findOrCreate = require('mongoose-findorcreate');
 const https = require("https");
 const { response } = require('express');
 
-let notSamePassword = false;
-let invalidEmail = false;
-let isUserFound = true;
+let notSamePassword;
+let invalidEmail;
+let isUserFound;
 
 const app = express();
 
@@ -140,28 +140,33 @@ app.route("/register")
         https.get(url, (response) => {
             response.on("data", (data) => {
                 const responseData = JSON.parse(data);
-                const ranOutCredits = responseData.error;
                 const emailStatus = responseData.status;
-                if (ranOutCredits === "Invalid API key or your account ran out of credits" || emailStatus === "valid" || password === confirmPassword) {
-                    User.register({ username: req.body.username }, req.body.password, (err, user) => {
-                        if (err) {
-                            console.log(err);
-                            res.render("/register");
-                        } else {
-                            passport.authenticate("local")(req, res, () => {
-                                res.redirect("/secrets");
-                            })
-                        }
-                    })
-                } else if (password != confirmPassword) {
+                const ranOutCredits = responseData.error;
+                if (password === confirmPassword) {
+                    if (emailStatus === "valid" || ranOutCredits === "Invalid API key or your account ran out of credits") {
+                        User.findOne({ username: email }, (err, user) => {
+                            if (user === null) {
+                                User.register({ username: req.body.username }, req.body.password, (err, user) => {
+                                    if (err) {
+                                        console.log(err);
+                                        res.render("/register");
+                                    } else {
+                                        passport.authenticate("local")(req, res, () => {
+                                            res.redirect("/secrets");
+                                        })
+                                    }
+                                })
+                            } else {
+                                isUserFound = false;
+                                res.redirect("/error");
+                            }
+                        })
+                    } else {
+                        invalidEmail = true;
+                        res.redirect("/error");
+                    }
+                } else {
                     notSamePassword = true;
-                    res.redirect("/error");
-
-                } else if (emailStatus === "invalid") {
-                    invalidEmail = true;
-                    res.redirect("/error");
-                }
-                else {
                     res.redirect("/error");
                 }
             })
@@ -178,7 +183,7 @@ app.route("/login")
             username: req.body.username,
             password: req.body.password
         });
-        User.findOne({ username: username, password: password }, (err, foundUser) => {
+        User.findOne({ username: user.username, password: user.password }, (err, foundUser) => {
             if (err) {
                 isUserFound = false;
                 res.redirect("/error");
