@@ -1,43 +1,70 @@
 <%- include('partials/header') %>
-<div class="mx-5"><i class="fas fa-key fa-3x"></i><a href="/" class="display-4 mx-1">Secrets</a></div>
+<div class="mx-5">
+  <i class="fas fa-key fa-3x"></i><a href="/" class="display-4 mx-1">Secrets</a>
+</div>
 <div class="container">
   <h1 class="text-center m-3 display-4">Register</h1>
   <div class="row">
-    <div class="col-xs-1 col-md-4"></div>
-    <div class="col-xs-10 col-md-4">
+    <div class="col-sm-1 col-md-4"></div>
+    <div class="col-sm-10 col-md-4">
       <form action="/register" method="POST">
         <div class="form-group">
           <label for="email"><strong>Email</strong></label>
-          <input type="email" class="form-control" name="username" required>
+          <input type="email" class="form-control" name="username" required />
         </div>
         <div class="form-group">
           <label for="password"><strong>Password</strong></label>
-          <input type="password" class="form-control" name="password" required>
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="confirmPassword"><strong>Confirm Password</strong></label>
-          <input type="password" class="form-control" name="confirmPassword" required>
+          <input
+            type="password"
+            class="form-control"
+            name="confirmPassword"
+            required
+          />
         </div>
         <div class="text-center">
           <button type="submit" class="btn btn-primary">Register</button>
-          <p>Have you already a account ?<a href="/login" class="btn btn-dark m-4" role="button">Login</a></p>
+          <p>
+            Have you already a account ?<a
+              href="/login"
+              class="btn btn-dark m-4"
+              role="button"
+              >Login</a
+            >
+          </p>
         </div>
       </form>
     </div>
-    <div class="col-xs-1 col-md-4"></div>
+    <div class="col-sm-1 col-md-4"></div>
   </div>
 </div>
 <div class="container mb-3">
   <div class="row">
-    <div class="col-xs-1 col-md-4"></div>
-    <div class="col-xs-10 col-md-4">
+    <div class="col-sm-1 col-md-4"></div>
+    <div class="col-sm-10 col-md-4">
       <div class="card">
         <div class="card-body">
-          <a class="btn btn-block btn-social btn-google" href="/auth/google" role="button">
+          <a
+            class="btn btn-block btn-social btn-google"
+            href="/auth/google"
+            role="button"
+          >
             <i class="fab fa-google"></i>
             Sign up with Google
           </a>
-          <a class="btn btn-block btn-social btn-facebook" href="/auth/facebook" role="button">
+          <a
+            class="btn btn-block btn-social btn-facebook"
+            href="/auth/facebook"
+            role="button"
+          >
             <i class="fab fa-facebook"></i>
             Connect with Facebook
           </a>
@@ -46,4 +73,5 @@
     </div>
   </div>
 </div>
+
 <%- include('partials/footer') %>
