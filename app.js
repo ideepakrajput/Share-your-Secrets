@@ -257,16 +257,21 @@ app.get("/error", (req, res) => {
 });
 
 //Delete Route
-app.post("/delete" ,(req,res)=>{
-    const selectedSecret=req.body.selectedSecret;
+app.post("/delete", (req, res) => {
+    const selectedSecret = req.body.selectedSecret;
 
-    User.findOneAndRemove({secerts:selectedSecret},(err,foundSecret)=>{
+    User.findOneAndRemove({ secerts: selectedSecret }, (err, foundSecret) => {
         if (err) {
             res.redirect("/error");
         } else {
             res.redirect("/secrets");
         }
     })
+})
+
+//My Secrets
+app.get("/my-secrets", (req, res) => {
+    res.render("mySecrets");
 })
 
 app.listen(process.env.PORT || 3000);
