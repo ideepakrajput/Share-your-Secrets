@@ -287,11 +287,11 @@ app.post('/delete', async (req, res) => {
 
 //My Secrets
 app.get("/my-secrets", (req, res) => {
-    User.find({ _id: req.user.id, "secrets": { $ne: null } }, (err, foundUsers) => {
+    User.find({ _id: req.user.id, "secrets": { $ne: null } }, (err, foundUser) => {
         if (err) {
-            console.log(err);
+            res.redirect('/');
         } else {
-            res.render("mySecrets", { usersWithSecrets: foundUsers, isAuthenticated: req.isAuthenticated() });
+            res.render("mySecrets", { userWithSecrets: foundUser, isAuthenticated: req.isAuthenticated() });
         }
     })
 })
