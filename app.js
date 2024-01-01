@@ -123,7 +123,7 @@ app.get("/auth/facebook/secrets",
 
 // Home Route
 app.get("/", function (req, res) {
-    res.render("home");
+    res.render("home", { isAuthenticated: req.isAuthenticated() })
 });
 
 //Register Route
