@@ -1,0 +1,16 @@
+{
+    "watch": [
+        "views"
+    ],
+    "ext": "js,json,ejs",
+    "execMap": {
+        "js": "node app.js"
+    },
+    "ignore": [
+        "node_modules"
+    ],
+    "delay": "0",
+    "events": {
+        "restart": "osascript -e 'display notification \"App restarted due to changes\" with title \"nodemon\"'"
+    }
+}

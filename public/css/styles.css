@@ -7,12 +7,29 @@ body {
   text-align: center;
 }
 
-.secret-text {
-  text-align: center;
+
+.secret-container {
+  display: flex;
+  justify-content: space-between;
   font-size: 2rem;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  border-radius: 10px;
   color: #fff;
   background-color: #000;
 }
+
+.secret-text {
+  margin: 0;
+
+}
+
+.delete-button {
+  outline: none;
+  background: none;
+  border: none;
+}
+
 .bi {
   font-size: 2rem;
   color: #000;
@@ -31,14 +48,15 @@ span a:hover,
 
 @media screen and (max-device-width: 480px) {
 
-  body{
+  body {
     font-size: 16px;
   }
-  .footer-text{
+
+  .footer-text {
     font-size: 2rem;
   }
 
-  .secret-text{
+  .secret-text {
     font-size: 3rem;
   }
 
@@ -53,10 +71,12 @@ span a:hover,
   .btn {
     font-size: 2rem;
   }
-  .submit-text{
+
+  .submit-text {
     margin-top: 100px;
   }
-  textarea{
+
+  textarea {
     font-size: 2rem;
   }
 }

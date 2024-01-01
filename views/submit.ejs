@@ -1,19 +1,22 @@
 <%- include('partials/header') %>
 
-<div class="container">
-  <div class="jumbotron centered">
-    <i class="fas fa-key fa-6x"></i>
-    <a href="/"><h1 class="display-3 heading">Secrets</h1></a>
-    <p class="secret-text">Don't keep your secrets, share them anonymously!</p>
+  <div class="container">
+    <div class="jumbotron centered">
+      <i class="fas fa-key fa-6x"></i>
+      <a href="/">
+        <h1 class="display-3 heading">Secrets</h1>
+      </a>
+      <p class="secret-text">Don't keep your secrets, share them anonymously!</p>
 
-    <div class="submit-text">
-    <form action="/submit" method="POST">
-      <div class="form-group">
-        <textarea class="form-control" name="secret" cols="30" rows="5" placeholder="What's your secret?" required></textarea>
+      <div class="submit-text">
+        <form action="/submit" method="POST">
+          <div class="form-group">
+            <textarea class="form-control" name="secret" cols="30" rows="5" placeholder="What's your secret?"
+              required></textarea>
+          </div>
+          <button type="submit" class="btn btn-dark">Submit</button>
+        </form>
       </div>
-      <button type="submit" class="btn btn-dark">Submit</button>
-    </form>
+    </div>
   </div>
-  </div>
-</div>
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>

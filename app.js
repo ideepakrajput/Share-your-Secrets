@@ -246,7 +246,11 @@ app.get("/secrets", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            res.render("secrets", { usersWithSecrets: foundUsers });
+            let userId = ""
+            if (req.isAuthenticated()) {
+                userId = req.user.id;
+            }
+            res.render("secrets", { usersWithSecrets: foundUsers, userId });
         }
     })
 });
@@ -257,21 +261,32 @@ app.get("/error", (req, res) => {
 });
 
 //Delete Route
-app.post("/delete", (req, res) => {
-    const selectedSecret = req.body.selectedSecret;
+app.post('/delete', async (req, res) => {
+    const { userIndex, secretIndex, userId } = req.body;
 
-    User.findOneAndRemove({ secerts: selectedSecret }, (err, foundSecret) => {
-        if (err) {
-            res.redirect("/error");
-        } else {
-            res.redirect("/secrets");
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
         }
-    })
-})
+
+        if (user.secrets && secretIndex >= 0 && secretIndex < user.secrets.length) {
+            user.secrets.splice(secretIndex, 1);
+            await user.save();
+            res.redirect('/secrets');
+        } else {
+            res.status(400).json({ error: 'Invalid secretIndex' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 //My Secrets
 app.get("/my-secrets", (req, res) => {
     res.render("mySecrets");
 })
 
-app.listen(process.env.PORT || 3000);
+app.listen(3005);
