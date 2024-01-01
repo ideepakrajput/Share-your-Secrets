@@ -246,12 +246,7 @@ app.get("/secrets", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            var userId = null;
-            if (req.isAuthenticated()) {
-                userId = req.user.id;
-            }
-            console.log(userId);
-            res.render("secrets", { usersWithSecrets: foundUsers, userId: userId, isAuthenticated: req.isAuthenticated() });
+            res.render("secrets", { usersWithSecrets: foundUsers, isAuthenticated: req.isAuthenticated() });
         }
     })
 });
@@ -263,7 +258,7 @@ app.get("/error", (req, res) => {
 
 //Delete Route
 app.post('/delete', async (req, res) => {
-    const { userIndex, secretIndex, userId } = req.body;
+    const { secretIndex, userId } = req.body;
 
     try {
         const user = await User.findById(userId);
@@ -275,7 +270,7 @@ app.post('/delete', async (req, res) => {
         if (user.secrets && secretIndex >= 0 && secretIndex < user.secrets.length) {
             user.secrets.splice(secretIndex, 1);
             await user.save();
-            res.redirect('/secrets');
+            res.redirect('/my-secrets');
         } else {
             res.status(400).json({ error: 'Invalid secretIndex' });
         }
@@ -287,11 +282,12 @@ app.post('/delete', async (req, res) => {
 
 //My Secrets
 app.get("/my-secrets", (req, res) => {
-    User.find({ _id: req.user.id, "secrets": { $ne: null } }, (err, foundUser) => {
+    User.findOne({ _id: new mongoose.Types.ObjectId(req.user.id) }, (err, foundUser) => {
         if (err) {
             res.redirect('/');
         } else {
-            res.render("mySecrets", { userWithSecrets: foundUser, isAuthenticated: req.isAuthenticated() });
+            console.log(foundUser);
+            res.render("mySecrets", { userWithSecrets: foundUser, userId: req.user.id, isAuthenticated: req.isAuthenticated() });
         }
     })
 })
