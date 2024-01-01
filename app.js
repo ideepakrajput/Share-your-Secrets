@@ -246,11 +246,12 @@ app.get("/secrets", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            let userId = ""
+            var userId = null;
             if (req.isAuthenticated()) {
                 userId = req.user.id;
             }
-            res.render("secrets", { usersWithSecrets: foundUsers, userId });
+            console.log(userId);
+            res.render("secrets", { usersWithSecrets: foundUsers, userId: userId, isAuthenticated: req.isAuthenticated() });
         }
     })
 });
