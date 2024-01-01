@@ -10,13 +10,14 @@
           What You Want
         </button>
         <% if(isAuthenticated){%>
-          <ul class="dropdown-menu" aria-labelledby="username">
+          <ul class="dropdown-menu text-center" aria-labelledby="username">
+            <li><a class="btn btn-dark btn-lg dropdown-item" href="/my-secrets" role="button">Submit a Secret</a></li>
+            <li><a class="btn btn-dark btn-lg dropdown-item" href="/submit" role="button">My Secret(s)</a></li>
             <li><a class="btn btn-light btn-lg dropdown-item" href="/logout" role="button">Log Out</a></li>
-            <li><a class="btn btn-dark btn-lg dropdown-item" href="/submit" role="button">Submit a Secret</a></li>
           </ul>
           <% } else{ %>
             <ul class="dropdown-menu text-center" aria-labelledby="username">
-              <li><a class="btn btn-light btn-lg dropdown-item" href="/register" role="button">Submit
+              <li><a class="btn btn-light btn-lg dropdown-item" href="/" role="button">Submit
                   Secret(s)</a>
               </li>
               <li><a class="btn btn-light btn-lg dropdown-item" href="/register" role="button">Register</a></li>

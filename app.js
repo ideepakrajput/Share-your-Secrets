@@ -287,7 +287,14 @@ app.post('/delete', async (req, res) => {
 
 //My Secrets
 app.get("/my-secrets", (req, res) => {
-    res.render("mySecrets");
+    User.find({ _id: req.user.id, "secrets": { $ne: null } }, (err, foundUsers) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(userId);
+            res.render("mySecrets", { usersWithSecrets: foundUsers, isAuthenticated: req.isAuthenticated() });
+        }
+    })
 })
 
 app.listen(3005);
