@@ -9,7 +9,7 @@
           aria-expanded="false">
           What You Want
         </button>
-        <% if(isAuthenticated){%>
+        <% if(!isAuthenticated){%>
           <ul class="dropdown-menu text-center" aria-labelledby="username">
             <li><a class="btn btn-dark btn-lg dropdown-item" href="/submit" role="button">Submit a Secret</a></li>
             <li><a class="btn btn-dark btn-lg dropdown-item" href="/my-secrets" role="button">My Secret(s)</a></li>
